@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>优惠积分工作台 · 个人版</title>
+<style>
+:root{--bg:#f3f4f7;--card:#fff;--line:#e6e8ee;--ink:#1d2330;--ink2:#4b5568;--ink3:#8a93a6;--brand:#4f46e5;--blue:#3b82f6;--green:#16a34a;--orange:#ea580c;--red:#dc2626;--purple:#7c3aed}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.topbar{background:linear-gradient(120deg,#312e81,#4f46e5 60%,#6d5ef0);color:#fff;padding:12px 16px}
+.topbar-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px}
+.brand .sub{display:block;font-size:11px;font-weight:400;opacity:.85}
+.actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.actions button{background:#ffffff22;border:1px solid #ffffff55;color:#fff;border-radius:8px;padding:5px 11px;font-size:12px;cursor:pointer}
+.actions button:hover{background:#ffffff40}
+.wrap{max-width:1120px;margin:0 auto;padding:12px 16px 30px}
+.statsbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.stat-chip{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:7px 13px;font-size:12px;color:var(--ink2)}
+.stat-chip b{font-size:16px;margin-left:5px;color:var(--ink)}
+.tabs{display:flex;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:12px;overflow-x:auto}
+.tab-btn{border:0;background:transparent;padding:8px 14px;border-radius:9px;font-size:13.5px;cursor:pointer;color:var(--ink2);white-space:nowrap}
+.tab-btn.active{background:#eef2ff;color:var(--brand);font-weight:600}
+section[data-tab]{display:none}section[data-tab].show{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;margin-bottom:10px}
+.card-title .num{margin-left:auto;font-size:12px;color:var(--ink3);font-weight:400}
+.badge{display:inline-block;padding:1px 7px;border-radius:999px;font-size:11px;margin-right:4px}
+.badge.purple{background:#ede9fe;color:#6d28d9}.badge.blue{background:#dbeafe;color:#1d4ed8}
+.badge.green{background:#dcfce7;color:#15803d}.badge.orange{background:#ffedd5;color:#c2410c}
+.badge.red{background:#fee2e2;color:#b91c1c}.badge.gray{background:#f1f5f9;color:#475569}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.filter-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--ink2)}
+.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.offer-item{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px}
+.offer-head{display:flex;gap:8px;align-items:flex-start}
+.offer-title{flex:1;font-weight:700;font-size:14px}
+.offer-title .row2{margin-top:3px}
+.offer-ctrl{display:flex;gap:6px;flex-wrap:wrap}
+.offer-ctrl button,.btn-mini{border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 9px;font-size:12px;cursor:pointer;color:var(--ink2)}
+.btn-mini.primary{background:#eef2ff;border-color:#c7d2fe;color:var(--brand)}
+.btn-mini.done{background:#dcfce7;border-color:#86efac;color:#15803d}
+.deal-line{display:inline-block;margin:7px 0 2px;background:#fef3c7;color:#92400e;border-radius:7px;padding:2px 10px;font-size:12px;font-weight:600}
+.offer-content{color:var(--ink2);font-size:12.8px;margin-top:5px;white-space:pre-line}
+.offer-meta{margin-top:7px;color:var(--ink3);font-size:11.8px;line-height:1.9}
+.offer-meta .lab{color:var(--ink2)}
+.empty{color:var(--ink3);text-align:center;padding:16px 0;font-size:13px}
+.hint-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:9px 13px;font-size:12.8px;color:#92400e;margin-bottom:10px}
+.feed-banner{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:9px 13px;font-size:12.8px;color:#3730a3;margin-bottom:10px}
+.alert-item{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px}
+.alert-item.soon{border-color:#fed7aa;background:#fff7ed}
+.alert-item.overdue{border-color:#fecaca;background:#fef2f2}
+.alert-main{flex:1;min-width:0}
+.alert-title{font-weight:600;font-size:13px}
+.alert-desc{color:var(--ink2);font-size:12.3px;margin-top:2px}
+.alert-entry{display:none;color:var(--brand);font-size:11.8px;margin-top:3px}
+.alert-entry.show{display:block}
+.point-item{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px;flex-wrap:wrap}
+.p-name{font-weight:700}
+.p-meta{color:var(--ink3);font-size:11.8px}
+.p-val{font-size:23px;font-weight:800;color:var(--brand);margin-left:auto}
+.match-form{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.match-result{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px;flex-wrap:wrap}
+.match-result.best{border-color:#f59e0b;background:#fffbeb}
+.match-save{font-size:17px;font-weight:800;color:var(--red)}
+.match-pay{font-size:12px;color:var(--ink3)}
+.form-toggle-btn{width:100%;border:1px dashed #c7d2fe;background:#eef2ff;color:var(--brand);border-radius:10px;padding:8px;font-size:13px;cursor:pointer;margin-top:5px}
+.form-box{display:none;border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:9px;background:#fafbfd}
+.form-box.show{display:block}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
+.field label{display:block;font-size:11.8px;color:var(--ink2);margin-bottom:2px}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:12.8px;font-family:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.checks{display:flex;flex-wrap:wrap;gap:3px 13px;font-size:12.5px}
+.form-actions{display:flex;gap:10px;margin-top:12px}
+.btn{border-radius:9px;padding:7px 16px;font-size:13px;border:1px solid var(--line);cursor:pointer;background:#fff;color:var(--ink2)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+footer{max-width:1120px;margin:0 auto;padding:4px 16px 24px;color:var(--ink3);font-size:11.5px;line-height:1.7}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:#1d2330;color:#fff;padding:9px 18px;border-radius:10px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:99}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.modal-mask{display:none;position:fixed;inset:0;background:#0009;z-index:98;align-items:center;justify-content:center}
+.modal-mask.show{display:flex}
+.modal{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:92%}
+.modal h3{margin-bottom:6px}.modal p{color:var(--ink2);font-size:13px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+      <div>优惠积分工作台<span class="sub">支付宝 · 微信 · 美团 · 点评 · 工建邮招 · 每日更新版</span></div>
+    </div>
+    <div class="actions">
+      <button onclick="toggleSettings()">⚙ 更新源</button>
+      <button onclick="exportData()">导出备份</button>
+      <button onclick="pickImport()">导入恢复</button>
+      <button onclick="resetPresets()">恢复预置</button>
+      <button onclick="clearAll()">清空数据</button>
+      <input type="file" id="fileImport" accept=".json" hidden>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <div id="feedBanner" style="display:none"></div>
+  <div class="statsbar" id="statsbar"></div>
+  <div class="card" id="settingsBox" style="display:none">
+    <div class="card-title">⚙ 每日更新设置<span class="num">数据仅在本机;联网只拉取一次情报包</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="feedUrlInput" placeholder="官方情报包地址(https://.../优惠情报.json)" style="flex:1;min-width:240px">
+      <button class="btn primary" onclick="saveFeedUrl()">保存并立即更新</button>
+      <button class="btn" onclick="fetchFeed(true)">立即更新</button>
+    </div>
+    <div style="font-size:12px;color:var(--ink3);margin-top:8px;line-height:1.8">
+      <b>本产品如何使用:</b><br>
+      ① 首次打开:把「我的积分」里的示例余额改成你自己的真实积分;② 每天打开本页:顶部会自动提示「官方情报包」最新更新与新增内容;③ 在 App 里看到的真实兑换档位(如"5000 积分兑 30 元券"),到「优惠情报库」编辑对应活动、填入"所需积分",即可在「我的积分」看到自动匹配;<br>
+      ④ 重要数据请用「导出备份」留存,换设备后「导入恢复」即可。<br>
+      <b>隐私声明:</b>你的积分与自定义内容只保存在本设备浏览器中,不会上传;联网仅用于获取每日官方优惠情报包。所有活动以各 App 实时展示为准。
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="today">📌 今天要处理</button>
+    <button class="tab-btn" data-tab="offers">🏷️ 优惠情报库</button>
+    <button class="tab-btn" data-tab="points">💳 我的积分</button>
+    <button class="tab-btn" data-tab="match">🧮 智能匹配</button>
+  </nav>
+  <main>
+    <section data-tab="today" class="show">
+      <div class="card"><div class="card-title">⚠️ 逾期与临期提醒</div><div id="alertList"></div></div>
+      <div class="card"><div class="card-title">🔥 今日必领 <span class="num" id="dailyCount"></span></div><div id="dailyList"></div></div>
+      <div class="card"><div class="card-title">📅 本周周期活动</div><div id="weeklyList"></div></div>
+    </section>
+    <section data-tab="offers">
+      <div class="card">
+        <div class="card-title">🏷️ 优惠情报库 <span class="num" id="offerCount"></span></div>
+        <div class="filter-row" id="platformFilters"></div>
+        <div id="offerList"></div>
+        <button class="form-toggle-btn" id="offerFormToggle">＋ 新增 / 编辑一条优惠情报</button>
+        <div class="form-box" id="offerFormBox">
+          <div class="form-grid">
+            <div class="field"><label>平台 *</label><select id="fPlatform"></select></div>
+            <div class="field"><label>类型</label><select id="fType"><option>每日领取</option><option>周期活动</option><option>积分兑换</option><option>达标奖励</option><option>支付立减</option><option>折扣券</option><option>其他</option></select></div>
+            <div class="field"><label>频次</label><select id="fFreq"><option>每日</option><option>每周一</option><option>每周二</option><option>每周三</option><option>每周四</option><option>每周五</option><option>每周六</option><option>每周日</option><option>每月8号</option><option>每月10号</option><option>每月18号</option><option>每月</option><option>长期</option><option>限时</option></select></div>
+            <div class="field"><label>活动名称 *</label><input id="fTitle" placeholder="如 周三5折饭票"></div>
+            <div class="field"><label>满 X 元可用(留空=无)</label><input type="number" id="fThreshold" min="0" step="0.01"></div>
+            <div class="field"><label>立减 Y 元(留空=无)</label><input type="number" id="fDiscount" min="0" step="0.01"></div>
+            <div class="field"><label>折扣:填50=5折</label><input type="number" id="fRate" min="1" max="99" step="1"></div>
+            <div class="field"><label>折扣封顶(元)</label><input type="number" id="fCap" min="0" step="0.01"></div>
+            <div class="field"><label>所需积分(在App核验后填)</label><input type="number" id="fNeedPts" min="0" step="1" placeholder="如 5000"></div>
+            <div class="field"><label>截止日期(长期留空)</label><input type="date" id="fEndDate"></div>
+            <div class="field"><label>来源可信度</label><select id="fRel"><option value="3">官方来源</option><option value="2" selected>可靠实测</option><option value="1">社区整理</option></select></div>
+            <div class="field"><label>入口路径 *</label><input id="fEntry" placeholder="如 掌上生活App → 饭票"></div>
+            <div class="field"><label>信息来源</label><input id="fSource"></div>
+          </div>
+          <div class="field" style="margin-top:9px"><label>优惠内容说明 *</label><textarea id="fContent"></textarea></div>
+          <div class="field" style="margin-top:9px"><label>适用场景</label><div class="checks" id="fScenarios"></div></div>
+          <div class="form-actions"><button class="btn primary" id="offerSaveBtn">保存情报</button><button class="btn" id="offerCancelBtn">取消</button></div>
+        </div>
+      </div>
+    </section>
+    <section data-tab="points">
+      <div class="card">
+        <div class="card-title">💳 我的积分台账 <span class="num" id="pointCount"></span></div>
+        <div class="hint-banner">各平台不提供积分查询接口:每周花一分钟把余额抄进来即可。下面的「示例积分」是演示数据,改成你自己的(或直接删除)。</div>
+        <div id="pointList"></div>
+        <div class="form-actions" style="margin:0 0 8px;flex-wrap:wrap"><button class="form-toggle-btn" id="pointFormToggle" style="margin:0">＋ 记一笔积分</button><button class="btn" onclick="clearExamplePoints()">清空示例积分</button></div>
+        <div class="form-box" id="pointFormBox">
+          <div class="form-grid">
+            <div class="field"><label>积分账户类型</label><select id="pPlatform"></select></div>
+            <div class="field"><label>账户名(可改)</label><input id="pLabel"></div>
+            <div class="field"><label>当前余额 *</label><input type="number" id="pBalance" min="0" step="1"></div>
+            <div class="field"><label>过期时间(不清留空)</label><input type="date" id="pExpiry"></div>
+          </div>
+          <div class="field" style="margin-top:9px"><label>备注</label><textarea id="pNote"></textarea></div>
+          <div class="form-actions"><button class="btn primary" id="pointSaveBtn">保存</button><button class="btn" id="pointCancelBtn">取消</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🎯 我的积分能兑什么(自动匹配)<span class="num">达标即真,缺分提示,不编数字</span></div>
+        <div id="ptsMatch"></div>
+      </div>
+    </section>
+    <section data-tab="match">
+      <div class="card">
+        <div class="card-title">🧮 这次消费怎么付最划算</div>
+        <div class="match-form">
+          <div class="field" style="min-width:160px"><label>消费金额(元)</label><input type="number" id="mAmount" min="0" step="0.01" placeholder="如 58"></div>
+          <div class="field" style="min-width:160px"><label>消费场景</label><select id="mScenario"><option>餐饮到店</option><option>外卖</option><option>奶茶咖啡</option><option>网购</option><option>缴费充值</option><option>出行</option><option>观影</option><option>商超</option></select></div>
+          <button class="btn primary" id="matchBtn">算一算</button>
+        </div>
+        <div id="matchResults" style="margin-top:12px"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<footer>
+  <div id="footData"></div>
+  <div style="margin-top:3px">所有活动均可能调整或名额限制,最终以各 App 内活动页面实时展示为准;请只通过官方 App 入口参与,谨防「代报名 / 内部名额」诈骗。预置情报带来源标注(官方来源/可靠实测/社区整理);积分档位仅在 App 内核验后登记,不做任何承诺性收益保证。</div>
+  <div style="margin-top:3px">优惠积分工作台 · 个人版 v1.0.0 · 构建 2026-09-06 · 你的数据仅存本机浏览器(可随时导出备份)</div>
+</footer>
+<div id="toast"></div>
+<div class="modal-mask" id="confirmMask"><div class="modal"><h3 id="confirmTitle"></h3><p id="confirmText"></p><div class="form-actions"><button class="btn danger" id="confirmYes">确认</button><button class="btn" id="confirmNo">取消</button></div></div></div>
+
+<script>
+(function(){
+'use strict';
+var PRESETS={
+ "schema": 2,
+ "offers": [
+  {
+   "id": "p1",
+   "platform": "支付宝",
+   "type": "每日领取",
+   "title": "银行卡天天抽奖",
+   "content": "每天免费抽奖 1 次，可抽银行卡支付立减金 0.5~20 元，抽到后 3~7 天内有效，建议每天早上抽。完成简单浏览任务可增加抽奖次数。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "支付宝App → 我的 → 银行卡 → 银行卡天天抽奖",
+   "source": "什么值得买社区实测（多篇一致）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p2",
+   "platform": "支付宝",
+   "type": "积分兑换",
+   "title": "会员积分兑立减券",
+   "content": "500 积分兑 1 元银行卡支付立减券；499 积分兑蜜雪冰城 4 元全场券；每天签到可攒积分，每月 8 号会员日有专属兑换。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每月8号",
+   "endDate": null,
+   "entry": "支付宝App → 我的 → 支付宝会员",
+   "source": "什么值得买社区实测",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p3",
+   "platform": "支付宝",
+   "type": "折扣券",
+   "title": "7元到店付款周卡",
+   "content": "用积分兑换 7 元周卡 = 7 个 1 元红包，每天到店付款自动抵 1 元，连抵 7 天。每 7 天限兑 1 次。",
+   "threshold": 1,
+   "discount": 1,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "餐饮到店",
+    "商超"
+   ],
+   "freq": "长期",
+   "endDate": "2026-12-31",
+   "entry": "支付宝App → 我的 → 支付宝会员 → 热门权益 → 7元到店付款周卡",
+   "source": "活动规则页（52趣折转载）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p4",
+   "platform": "支付宝",
+   "type": "每日领取",
+   "title": "支付有礼 · 碰一碰红包",
+   "content": "首页搜「支付有礼」，每日答题可抽碰一碰红包；一期答题活动约持续 3 周，周六有大礼。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": "2026-09-13",
+   "entry": "支付宝App 首页搜索「支付有礼」",
+   "source": "活动线报汇总",
+   "rel": 1,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p5",
+   "platform": "微信支付",
+   "type": "每日领取",
+   "title": "摇优惠",
+   "content": "每天可摇 3 次（第 1 次免费），随机摇中银行立减金 0.5~10 元，建议早起摇。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "微信 → 我 → 服务 → 摇优惠",
+   "source": "什么值得买社区实测（多篇一致）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p6",
+   "platform": "美团",
+   "type": "周期活动",
+   "title": "周三外卖节（神券节）",
+   "content": "每周三外卖券加码：必得 18 元外卖券，可膨胀至高满 40 减 20，大额订单周三下单最划算。",
+   "threshold": 40,
+   "discount": 20,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "外卖"
+   ],
+   "freq": "每周三",
+   "endDate": null,
+   "entry": "美团App → 外卖首页 → 天天神券 / 我的 → 红包卡券",
+   "source": "美团外卖官方服务号",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p7",
+   "platform": "美团",
+   "type": "每日领取",
+   "title": "天天神券",
+   "content": "外卖首页每日可领神券，可膨胀最高至 20 元；面额因人而异，每天 10 点 / 14 点 / 20 点补券量最足。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "外卖"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "美团App → 外卖首页 → 天天神券",
+   "source": "美团官方活动FAQ",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p8",
+   "platform": "美团",
+   "type": "周期活动",
+   "title": "每月18日会员惊喜日",
+   "content": "每月 18 号会员日发放限时大额组合券包，配合周三外卖节食用更佳。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "外卖",
+    "餐饮到店"
+   ],
+   "freq": "每月18号",
+   "endDate": null,
+   "entry": "美团App → 我的 → 会员中心",
+   "source": "什么值得买社区整理",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p9",
+   "platform": "大众点评",
+   "type": "每日领取",
+   "title": "每日签到开宝箱",
+   "content": "做任务攒钥匙开宝箱得金币，金币满 1000 可提现微信零钱（小额随机全额、3 元以上打八折），或兑换 1~50 元无门槛券。每天 3~5 分钟，每天约 3~5 毛但极稳定。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "大众点评App 首页左上角签到入口",
+   "source": "用户实测 + 官方页面",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p10",
+   "platform": "大众点评",
+   "type": "其他",
+   "title": "免费试 / 0元探店",
+   "content": "报名抽霸王餐免费体验（免费试 0 门槛）；坚持写笔记解锁「0 元探店」抽奖资格，中签率更高。攒霸气币可兑 PASS 卡换免费试。一年轻松省大几百。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "餐饮到店"
+   ],
+   "freq": "长期",
+   "endDate": null,
+   "entry": "大众点评App 首页搜索「免费试」或「0元探店」",
+   "source": "用户实测 + 官方页面",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p11",
+   "platform": "大众点评",
+   "type": "每日领取",
+   "title": "天天领红包 / 天天开盲盒",
+   "content": "写 15 字过审评价可开盲盒（当日 +10 次），有机会得现金红包（0.3~10 元）、大餐免单、美食券。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "餐饮到店"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "大众点评App 首页搜索「天天领红包」「天天开盲盒」",
+   "source": "用户实测 + 官方页面",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p12",
+   "platform": "大众点评",
+   "type": "其他",
+   "title": "橙V会员月度券",
+   "content": "评价活跃升到橙V（VIP L3+）后，每月可领额外 VIP 券，含美团闪购券、小象超市券等。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "商超",
+    "外卖"
+   ],
+   "freq": "每月",
+   "endDate": null,
+   "entry": "大众点评App → 我的 → 会员等级权益",
+   "source": "用户实测",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p13",
+   "platform": "工商银行",
+   "type": "周期活动",
+   "title": "工行消费季 · 周五抽奖",
+   "content": "每周五至周日可参与抽奖，有机会获得工银i豆或微信立减金，长期活动，建议设周五闹钟。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每周五",
+   "endDate": null,
+   "entry": "中国工商银行App 搜索「工行消费季」",
+   "source": "社区整理（多篇一致）",
+   "rel": 1,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p14",
+   "platform": "工商银行",
+   "type": "每日领取",
+   "title": "任务中心 · 每日任务",
+   "content": "每日浏览、签到类任务不用花钱，完成后抽立减金或工银i豆，每天顺手点一遍，一个月省一顿饭钱。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "中国工商银行App 搜索「任务中心」",
+   "source": "新闻报道（鞍山全媒体）+ 社区整理",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p15",
+   "platform": "工商银行",
+   "type": "每日领取",
+   "title": "工银i豆乐园 · 每日浇水",
+   "content": "每日浇水、浏览任务攒 i豆，连续操作有额外奖励；约 1100 豆 ≈ 1 元，可兑微信立减金、京东E卡、话费。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每日",
+   "endDate": null,
+   "entry": "中国工商银行App → 工银i豆乐园",
+   "source": "社区整理（多篇一致）",
+   "rel": 1,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p16",
+   "platform": "工商银行",
+   "type": "达标奖励",
+   "title": "e生活权益中心 · 月度i豆",
+   "content": "每月按消费等级领 i豆：M2 领 1000 豆（约 1 元）至 M7 领 10 万豆（约 100 元），上月或本月有一笔消费即可，有工行信用卡千万别忘。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每月",
+   "endDate": null,
+   "entry": "工银e生活App 搜索「权益中心」",
+   "source": "社区整理",
+   "rel": 1,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p17",
+   "platform": "工商银行",
+   "type": "达标奖励",
+   "title": "月月刷（微信支付）",
+   "content": "微信搜「微信支付月月刷」进工行专区报名；报名后 30 天内用指定工行卡微信支付，单笔 ≥5 元计 1 笔（每日上限 2 笔），笔数达标领微信立减金。储蓄卡、信用卡分别报名分别计奖。",
+   "threshold": 5,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每月",
+   "endDate": null,
+   "entry": "微信搜索「微信支付月月刷」小程序 → 工行专区；或工行App搜「月月刷」",
+   "source": "社区整理（操作SOP）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p18",
+   "platform": "工商银行",
+   "type": "支付立减",
+   "title": "云闪付绑工行卡 · 出行优惠",
+   "content": "云闪付绑工行卡：首绑送 5 元立减券；乘公交 2 折、地铁 5 折（每月各 4 次）；1 分钱骑共享单车（每月 4 次）。每日有名额限制，建议早点用。",
+   "threshold": 2,
+   "discount": null,
+   "rate": 0.5,
+   "cap": 2,
+   "scenarios": [
+    "出行"
+   ],
+   "freq": "长期",
+   "endDate": "2026-12-31",
+   "entry": "云闪付App 乘车码 / 骑行码，绑定工行卡支付",
+   "source": "工行官方广告页（券有效期至2026-12-31）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p19",
+   "platform": "工商银行",
+   "type": "支付立减",
+   "title": "云闪付满 20 随机立减",
+   "content": "日常消费用云闪付 + 工行卡支付，单笔满 20 元随机立减，基本能减 3.8 元左右，线上线下商超、便利店均可用。",
+   "threshold": 20,
+   "discount": 3.8,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用",
+    "商超"
+   ],
+   "freq": "长期",
+   "endDate": "2026-12-31",
+   "entry": "云闪付App → 付款码，选工行卡",
+   "source": "社区整理 + 官方广告页",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p20",
+   "platform": "工商银行",
+   "type": "支付立减",
+   "title": "12306 购票 5 折",
+   "content": "12306 购火车票支付时选云闪付 + 工行奋斗白金卡，享 5 折优惠，单笔最高减 30 元，每月限 2 次（奋斗白金卡专属权益）。",
+   "threshold": 0.01,
+   "discount": null,
+   "rate": 0.5,
+   "cap": 30,
+   "scenarios": [
+    "出行"
+   ],
+   "freq": "长期",
+   "endDate": "2026-12-31",
+   "entry": "铁路12306App → 支付页选「云闪付」→ 工行卡",
+   "source": "工行官方广告页",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p21",
+   "platform": "建设银行",
+   "type": "折扣券",
+   "title": "惠省钱 · 0.99元购立减金券包",
+   "content": "最低 0.99 元购买 10 元微信立减金券包（部分用户可抽中更高档），月月可购；省钱卡购买后 30 天内有效，过期不补发、不可退订，买了尽快用。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每月",
+   "endDate": "2026-12-31",
+   "entry": "建行生活App / 建行手机银行App 搜索「惠省钱」",
+   "source": "建设银行官方推广（新浪财经）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p22",
+   "platform": "建设银行",
+   "type": "支付立减",
+   "title": "任务中心 · 缴费福利",
+   "content": "通过建行平台缴水电气费、充话费满 30 元，可领 2~5 元微信立减金；另有签到抽奖、浏览资讯送积分等轻量活动，几乎每月更新。",
+   "threshold": 30,
+   "discount": 2,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "缴费充值"
+   ],
+   "freq": "每月",
+   "endDate": null,
+   "entry": "建行生活App / 建行手机银行App → 任务中心",
+   "source": "新闻报道（鞍山全媒体）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p23",
+   "platform": "建设银行",
+   "type": "积分兑换",
+   "title": "龙积分 · 好兑节",
+   "content": "龙积分可兑换微信 / 支付宝立减金、话费券、加油抵现、京东券及实物好物，积分别攒着贬值，攒够就换。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "长期",
+   "endDate": null,
+   "entry": "建行生活App → 龙积分",
+   "source": "建设银行官方活动（网易福建报道）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p24",
+   "platform": "邮储银行",
+   "type": "达标奖励",
+   "title": "信用卡 · 越刷越精彩万元享好礼",
+   "content": "报名后按当月信用卡累计消费达标领奖：满 6000 元（9月限时降档）领 5 元立减金或 6000 积分；满 2 万领 10 元档；满 3 万领 20 元档；当月消费排名前 6000 名额外领 100 元立减金。活动 9 月 30 日截止！",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "限时",
+   "endDate": "2026-09-30",
+   "entry": "邮储手机银行App → 信用卡 → 活动礼遇 → 消费达标活动；或邮储信用卡微信小程序",
+   "source": "邮储银行官网活动页",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p25",
+   "platform": "邮储银行",
+   "type": "周期活动",
+   "title": "信用卡 · 周六5折",
+   "content": "每周六 5 折专区：蜜雪冰城天天一分购、霸王茶姬天天有优惠、好想来零食嗨购季等，覆盖茶饮零食连锁。",
+   "threshold": null,
+   "discount": null,
+   "rate": 0.5,
+   "cap": null,
+   "scenarios": [
+    "奶茶咖啡",
+    "餐饮到店"
+   ],
+   "freq": "每周六",
+   "endDate": null,
+   "entry": "邮储信用卡App / 邮储信用卡微信公众号 → 周六5折",
+   "source": "邮储银行官网活动列表（2026-09-01更新）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p26",
+   "platform": "邮储银行",
+   "type": "支付立减",
+   "title": "信用卡 · 支付宝碰一下6元券包",
+   "content": "领取支付宝碰一下 6 元券包，淘宝免密支付立减 6 元。",
+   "threshold": null,
+   "discount": 6,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "网购"
+   ],
+   "freq": "长期",
+   "endDate": null,
+   "entry": "邮储信用卡微信公众号 / 邮储信用卡App 活动页",
+   "source": "邮储银行官网活动列表（2026-08-21发布）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p27",
+   "platform": "邮储银行",
+   "type": "达标奖励",
+   "title": "借记卡 · 支付达标享好礼",
+   "content": "报名后按月快捷支付达标抽奖：月交易满 3000 / 6000 / 10000 元，次月 10 号至月末可抽微信立减金（1.88 元起，最高 1500 元），每月最多 3 次。注意：立减金领取后 3 天内要兑换、兑换后 7 天内有效。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "通用"
+   ],
+   "freq": "每月10号",
+   "endDate": "2026-11-30",
+   "entry": "邮储银行App → 活动专区；或微信小程序「邮储好礼汇」",
+   "source": "邮储银行官方活动海报",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p28",
+   "platform": "招商银行",
+   "type": "周期活动",
+   "title": "周三5折饭票（招牌活动）",
+   "content": "每周三 10:00 抢 5 折美食代金券：50 元购 100 元券、100 元购 200 元券，火锅烤肉连锁茶饮咖啡全覆盖。资格：上月信用卡消费 >5 笔（新户前 3 个月免门槛）；活动为特邀制，以页面展示为准。",
+   "threshold": 100,
+   "discount": 50,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "餐饮到店"
+   ],
+   "freq": "每周三",
+   "endDate": "2026-12-31",
+   "entry": "掌上生活App → 精选 → 饭票 → 周三5折",
+   "source": "招商银行官方活动规则（飞客网转载）",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p29",
+   "platform": "招商银行",
+   "type": "积分兑换",
+   "title": "9分招牌菜",
+   "content": "9 积分兑换奶茶、甜品、小吃、餐饮抵扣券，零散积分直接变现，无消费门槛。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "奶茶咖啡",
+    "餐饮到店"
+   ],
+   "freq": "长期",
+   "endDate": null,
+   "entry": "掌上生活App → 饭票 / 积分专区",
+   "source": "招商银行官方微博 + 社区整理",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p30",
+   "platform": "招商银行",
+   "type": "折扣券",
+   "title": "9元观影",
+   "content": "当月信用卡消费满 3 笔 199 元，每月可 1~2 次 9 元买电影票；新户首月免达标资格。另有 19.9 元起特惠影票通用。",
+   "threshold": null,
+   "discount": null,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "观影"
+   ],
+   "freq": "每月",
+   "endDate": null,
+   "entry": "掌上生活App → 影票",
+   "source": "社区整理（多篇一致）",
+   "rel": 2,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  },
+  {
+   "id": "p31",
+   "platform": "招商银行",
+   "type": "折扣券",
+   "title": "饭票日常通用券",
+   "content": "不用等周三：89 元购 100 元餐饮通用券、10 元购 20 元快餐券，随时可买，覆盖连锁餐饮。",
+   "threshold": 100,
+   "discount": 11,
+   "rate": null,
+   "cap": null,
+   "scenarios": [
+    "餐饮到店"
+   ],
+   "freq": "长期",
+   "endDate": null,
+   "entry": "掌上生活App → 饭票",
+   "source": "招商银行官方微博",
+   "rel": 3,
+   "needPts": null,
+   "preset": true,
+   "added_by": "preset",
+   "verify": "app",
+   "active": true,
+   "first_seen": "2026-09-05",
+   "last_seen": "2026-09-05"
+  }
+ ]
+};
+var FEED_URL_DEFAULT='https://jimmylover168.github.io/youhui-workbench/优惠情报.json';
+var PRESET_POINTS=[
+  {platform:'支付宝积分',label:'支付宝会员积分',balance:3600,expiry:null,note:'示例:签到/消费可得,以App实时为准',isExample:true},
+  {platform:'招行信用卡积分',label:'招商银行信用卡积分',balance:12000,expiry:null,note:'示例:消费1元积1分,可兑饭票/观影/9分招牌菜',isExample:true},
+  {platform:'工银i豆',label:'工银i豆',balance:5500,expiry:null,note:'示例:可兑微信立减金/话费',isExample:true}
+];
+var STORE_KEY='hb_radar_v1';
+var PLATFORMS=['全部','支付宝','微信支付','美团','大众点评','工商银行','建设银行','邮储银行','招商银行','其他'];
+var POINT_PLATS=['支付宝积分','招行信用卡积分','工银i豆','建行龙积分','邮储信用卡积分','美团积分','微信支付积分','其他'];
+var PTS_MAP={'支付宝':'支付宝积分','微信支付':'微信支付积分','美团':'美团积分','大众点评':'点评积分','工商银行':'工银i豆','建设银行':'建行龙积分','邮储银行':'邮储信用卡积分','招商银行':'招行信用卡积分'};
+var SCENARIOS=['通用','餐饮到店','外卖','奶茶咖啡','网购','缴费充值','出行','观影','商超'];
+var WEEK_MAP={'每周日':0,'每周一':1,'每周二':2,'每周三':3,'每周四':4,'每周五':5,'每周六':6};
+var state=null,editOfferId=null,editPointId=null,confirmCb=null,lastNews=[];
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function todayStr(){var d=new Date(),m=d.getMonth()+1,x=d.getDate();return d.getFullYear()+'-'+(m<10?'0'+m:m)+'-'+(x<10?'0'+x:x);}
+function daysUntil(s){if(!s)return null;var a=new Date(todayStr()+'T00:00:00'),b=new Date(s+'T00:00:00');if(isNaN(b.getTime()))return null;return Math.round((b-a)/86400000);}
+function isExpired(o){var d=daysUntil(o.endDate);return d!==null&&d<0;}
+function isExpiringSoon(o){var d=daysUntil(o.endDate);return d!==null&&d>=0&&d<=7;}
+function freqToday(o){if(o.freq==='每日')return true;if(WEEK_MAP.hasOwnProperty(o.freq))return new Date().getDay()===WEEK_MAP[o.freq];var m=/^每月(\d+)号$/.exec(o.freq||'');if(m)return new Date().getDate()===parseInt(m[1],10);return false;}
+function isWeekly(o){return WEEK_MAP.hasOwnProperty(o.freq||'');}
+function relLabel(r){if(r===3)return '<span class="badge green">官方来源</span>';if(r===2)return '<span class="badge blue">可靠实测</span>';return '<span class="badge gray">社区整理</span>';}
+function money(n){return n>=10?'¥'+Math.round(n*100)/100:'¥'+(Math.round(n*100)/100).toFixed(2);}
+function dealText(o){var p=[];if(o.threshold)p.push('满 '+o.threshold+' 元');if(o.discount)p.push('减 '+o.discount+' 元');if(o.rate)p.push((o.rate*10)+' 折'+(o.cap?'(封顶减 '+o.cap+' 元)':''));return p.join(' · ');}
+function calcSaving(o,amount){if(typeof amount!=='number'||isNaN(amount)||amount<=0)return 0;var th=o.threshold||0;if(amount<th)return 0;if(o.rate){var s=amount*(1-o.rate);if(o.cap&&s>o.cap)s=o.cap;return s;}if(o.discount)return o.discount;return 0;}
+function scenarioFit(o,sc){if(!o.scenarios||!o.scenarios.length)return true;if(o.scenarios.indexOf('通用')>=0)return true;return o.scenarios.indexOf(sc)>=0;}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show');},2400);}
+function askConfirm(title,text,cb){$('confirmTitle').textContent=title;$('confirmText').textContent=text;confirmCb=cb;$('confirmMask').classList.add('show');}
+function closeConfirm(){confirmCb=null;$('confirmMask').classList.remove('show');}
+
+function defaultState(){
+  var offers=[];(PRESETS.offers||[]).forEach(function(o,i){var c=JSON.parse(JSON.stringify(o));c.id='p'+(i+1);c.preset=true;c.active=c.active!==false;offers.push(c);});
+  var points=[];PRESET_POINTS.forEach(function(p){var c=JSON.parse(JSON.stringify(p));c.id=uid('x');c.updated=todayStr();points.push(c);});
+  return {offers:offers,points:points,dailyDone:{},filterPlatform:'全部',feedUrl:FEED_URL_DEFAULT,feedDate:null};
+}
+function loadState(){try{var raw=localStorage.getItem(STORE_KEY);if(raw){var p=JSON.parse(raw);if(p&&p.offers){state=p;if(!state.points)state.points=[];if(!state.dailyDone)state.dailyDone={};if(!state.filterPlatform)state.filterPlatform='全部';if(!state.offers.length&&(PRESETS.offers||[]).length)resetPresets(false);if(state.feedUrl===undefined)state.feedUrl=FEED_URL_DEFAULT;return;}}}catch(e){}state=defaultState();saveState();}
+function saveState(){try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){toast('本地存储失败,请导出备份');}}
+
+/* ---------- 官方情报包(每日更新) ---------- */
+function balOf(op){var key=PTS_MAP[op]||op;var s=0;state.points.forEach(function(p){if(p.platform===key)s+=p.balance;});return s;}
+function acctCount(op){var key=PTS_MAP[op]||op;return state.points.filter(function(p){return p.platform===key;}).length;}
+function fetchFeed(manual){
+  var url=(state.feedUrl||'').trim();
+  if(!url){if(manual)toast('请先填写官方情报包地址(⚙更新源)');return;}
+  if(typeof fetch!=='function'){toast('当前环境不支持联网更新');return;}
+  fetch(url+(url.indexOf('?')>=0?'&':'?')+'v='+Date.now()).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){
+    if(!d||d.kind!=='hb_offer_feed'||!Array.isArray(d.offers))throw new Error('格式不对');
+    var map={};state.offers.forEach(function(o){map[o.platform+'|'+o.title]=o;});
+    var news=[];
+    d.offers.forEach(function(r){
+      var key=r.platform+'|'+r.title;
+      var cur=map[key];
+      if(cur){ if(!cur.touched)Object.assign(cur,r,{active:cur.active!==false}); }
+      else { var c=JSON.parse(JSON.stringify(r));c.id=uid('f');c.active=true;c.feed=true;state.offers.push(c);map[key]=c;news.push(c); }
+    });
+    var prev=state.feedDate;
+    state.feedDate=d.meta&&d.meta.date||todayStr();
+    lastNews=news;
+    saveState();refreshAll();
+    var chip=prev&&prev!==state.feedDate?('(较上次更新 '+prev+')'):'';
+    if(news.length)$('feedBanner').innerHTML='<div class="feed-banner">📢 <b>官方情报包已更新至 '+esc(state.feedDate)+'</b>'+chip+',本次新增 '+news.length+' 条: '+news.slice(0,6).map(function(n){return esc(n.platform+'·'+n.title);}).join('; ')+(news.length>6?' 等':'')+' —— 打开「优惠情报库」查看。窗口未关闭时,想看到最新数据请刷新页面。</div>';
+    else $('feedBanner').innerHTML='<div class="feed-banner">✅ 官方情报包已是最新('+esc(state.feedDate)+')'+(manual?'':'')+'</div>';
+    $('feedBanner').style.display='block';
+    toast(news.length?('已更新,新增 '+news.length+' 条'):'已是最新');
+  }).catch(function(e){if(manual)toast('更新失败:'+e.message+' (可稍后重试,或让卖家提供导入包)');});
+}
+function saveFeedUrl(){state.feedUrl=$('feedUrlInput').value.trim();saveState();fetchFeed(true);}
+function toggleSettings(){var b=$('settingsBox');var show=b.style.display==='none';b.style.display=show?'block':'none';if(show)$('feedUrlInput').value=state.feedUrl||'';}
+function importFeedPack(d){
+  var map={};state.offers.forEach(function(o){map[o.platform+'|'+o.title]=o;});
+  var news=[];
+  d.offers.forEach(function(r){var key=r.platform+'|'+r.title;var cur=map[key];
+    if(cur){if(!cur.touched)Object.assign(cur,r,{active:cur.active!==false});}
+    else{var c=JSON.parse(JSON.stringify(r));c.id=uid('f');c.active=true;c.feed=true;state.offers.push(c);map[key]=c;news.push(c);}});
+  state.feedDate=(d.meta&&d.meta.date)||todayStr();
+  saveState();refreshAll();
+  $('feedBanner').innerHTML='<div class="feed-banner">✅ 情报更新包已导入('+esc(state.feedDate)+'),新增 '+news.length+' 条。</div>';$('feedBanner').style.display='block';
+  toast('更新包导入完成,新增 '+news.length+' 条');
+}
+
+/* ---------- 渲染 ---------- */
+function renderStats(){
+  var act=0,daily=0,soon=0,dailyTodo=0,dt=state.dailyDone[todayStr()]||{};
+  state.offers.forEach(function(o){if(!isExpired(o))act++;if(o.freq==='每日'&&!isExpired(o)){daily++;if(!dt[o.id])dailyTodo++;}if(isExpiringSoon(o))soon++;});
+  var ptsExp=state.points.filter(function(p){var d=daysUntil(p.expiry);return d!==null&&d<=30;}).length;
+  var feedChip=state.feedDate?'情报包 '+state.feedDate:(FEED_URL_DEFAULT?'情报包:内置(未联网更新)':'情报包:内置31条');
+  $('statsbar').innerHTML=
+    '<div class="stat-chip">进行中活动 <b>'+act+'</b></div>'+
+    '<div class="stat-chip">今日待领 <b>'+dailyTodo+'</b></div>'+
+    '<div class="stat-chip">7天内到期 <b style="color:var(--orange)">'+soon+'</b></div>'+
+    '<div class="stat-chip">积分账户 <b>'+state.points.length+'</b></div>'+
+    (ptsExp?'<div class="stat-chip">积分临期 <b style="color:var(--red)">'+ptsExp+'</b></div>':'')+
+    '<div class="stat-chip">'+feedChip+'</div>';
+}
+function renderToday(){renderAlerts();renderDaily();renderWeekly();}
+function renderAlerts(){
+  var html='';
+  state.offers.forEach(function(o){if(!isExpired(o))return;html+='<div class="alert-item overdue"><div class="alert-main"><div class="alert-title"><span class="badge red">已过期</span>'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">已于 '+esc(o.endDate)+' 到期,以 App 内最新为准,可删除或更新。</div></div><div class="offer-ctrl"><button class="btn-mini" data-a="del-offer" data-id="'+o.id+'">删除</button></div></div>';});
+  state.offers.forEach(function(o){if(!isExpiringSoon(o))return;var d=daysUntil(o.endDate);html+='<div class="alert-item soon"><div class="alert-main"><div class="alert-title"><span class="badge orange">仅剩 '+d+' 天</span>'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">'+esc(o.content)+'</div><div class="alert-entry" id="entry-'+o.id+'">入口:'+esc(o.entry)+'</div></div><div class="offer-ctrl"><button class="btn-mini primary" data-a="show-entry" data-id="'+o.id+'">查看入口</button></div></div>';});
+  state.points.forEach(function(p){var d=daysUntil(p.expiry);if(d===null||d>30)return;if(d<0)html+='<div class="alert-item overdue"><div class="alert-main"><div class="alert-title"><span class="badge red">积分已过期</span>'+esc(p.platform)+'('+p.balance.toLocaleString()+')</div><div class="alert-desc">已于 '+esc(p.expiry)+' 过期,请核实并更新。</div></div></div>';else html+='<div class="alert-item soon"><div class="alert-main"><div class="alert-title"><span class="badge orange">'+d+' 天后过期</span>'+esc(p.platform)+'('+p.balance.toLocaleString()+')</div><div class="alert-desc">'+esc(p.note||'尽快到 App 兑换,避免清零。')+'</div></div></div>';});
+  $('alertList').innerHTML=html||'<div class="empty">暂无逾期或临期项,很好!</div>';
+}
+function renderDaily(){
+  var html='',n=0;
+  state.offers.forEach(function(o){if(o.freq!=='每日'||isExpired(o))return;n++;var done=!!state.dailyTodayId(o.id);
+    html+='<div class="alert-item"><div class="alert-main"><div class="alert-title">'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">'+esc(o.content)+'</div><div class="alert-entry" id="entry-'+o.id+'">入口:'+esc(o.entry)+'</div></div><div class="offer-ctrl"><button class="btn-mini primary" data-a="show-entry" data-id="'+o.id+'">入口</button><button class="btn-mini'+(done?' done':'')+'" data-a="toggle-daily" data-id="'+o.id+'">'+(done?'已领':'领完打卡')+'</button></div></div>';});
+  $('dailyCount').textContent=n+' 项';
+  $('dailyList').innerHTML=html||'<div class="empty">今天的必领项目都完成啦,明天见!</div>';
+}
+function renderWeekly(){
+  var html='';
+  state.offers.forEach(function(o){if(!isWeekly(o)||isExpired(o))return;var isT=freqToday(o);
+    html+='<div class="alert-item'+(isT?' soon':'')+'"><div class="alert-main"><div class="alert-title">'+(isT?'<span class="badge red">今天!</span>':'<span class="badge blue">'+esc(o.freq)+'</span>')+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">'+esc(o.content)+'</div><div class="alert-entry" id="entry-'+o.id+'">入口:'+esc(o.entry)+'</div></div><div class="offer-ctrl"><button class="btn-mini primary" data-a="show-entry" data-id="'+o.id+'">入口</button></div></div>';});
+  $('weeklyList').innerHTML=html||'<div class="empty">暂无周期活动</div>';
+}
+function endBadge(o){var d=daysUntil(o.endDate);if(d===null)return '';if(d<0)return '<span class="badge red">已过期</span>';if(d<=7)return '<span class="badge orange">剩 '+d+' 天</span>';return '<span class="badge gray">'+esc(o.endDate)+' 截止</span>';}
+function renderOffers(){
+  var fh='';PLATFORMS.forEach(function(p){fh+='<button class="filter-chip'+(state.filterPlatform===p?' active':'')+'" data-a="filter" data-p="'+esc(p)+'">'+esc(p)+'</button>';});
+  $('platformFilters').innerHTML=fh;
+  var html='',shown=0;
+  state.offers.forEach(function(o){if(state.filterPlatform!=='全部'&&o.platform!==state.filterPlatform)return;shown++;
+    html+='<div class="offer-item"><div class="offer-head"><div class="offer-title">'
+      +'<span class="badge purple">'+esc(o.platform)+'</span><span class="badge blue">'+esc(o.type)+'</span>'+(o.freq?'<span class="badge gray">'+esc(o.freq)+'</span>':'')+endBadge(o)
+      +(o.needPts?'<span class="badge orange">需 '+o.needPts.toLocaleString()+' 积分</span>':'')
+      +(o.feed?'<span class="badge green">情报包</span>':'')
+      +'<div class="row2">'+esc(o.title)+'</div></div>'
+      +'<div class="offer-ctrl"><button data-a="edit-offer" data-id="'+o.id+'">编辑</button><button data-a="del-offer" data-id="'+o.id+'">删除</button></div></div>'
+      +(dealText(o)?'<div class="deal-line">'+dealText(o)+'</div>':'')
+      +'<div class="offer-content">'+esc(o.content)+'</div>'
+      +'<div class="offer-meta"><div><span class="lab">入口:</span>'+esc(o.entry)+'</div>'
+      +'<div><span class="lab">来源:</span>'+relLabel(o.rel)+esc(o.source||'')+(o.lastSeen?' · 情报更新 '+esc(o.lastSeen):'')+'</div>'
+      +(o.scenarios&&o.scenarios.length?'<div><span class="lab">场景:</span>'+esc(o.scenarios.join('、'))+'</div>':'')
+      +'</div></div>';});
+  $('offerList').innerHTML=html||'<div class="empty">该平台暂无情报,点下方按钮新增</div>';
+  $('offerCount').textContent=shown+' 条';
+}
+function renderPoints(){
+  var html='';
+  state.points.forEach(function(p){var d=daysUntil(p.expiry),eb='';
+    if(d!==null){if(d<0)eb='<span class="badge red">已过期</span>';else if(d<=30)eb='<span class="badge orange">剩 '+d+' 天</span>';}
+    html+='<div class="point-item"><div style="flex:1;min-width:160px"><div class="p-name">'+esc(p.label)+' <span class="badge gray">'+esc(p.platform)+'</span>'+(p.isExample?' <span class="badge orange">示例</span>':'')+'</div>'
+      +'<div class="p-meta">更新于 '+esc(p.updated)+(eb?' · '+eb:'')+(p.expiry?' · 过期日 '+esc(p.expiry):'')+'</div>'
+      +(p.note?'<div class="p-meta">'+esc(p.note)+'</div>':'')
+      +'</div><div class="p-val">'+p.balance.toLocaleString()+'</div>'
+      +'<div class="offer-ctrl"><button data-a="edit-point" data-id="'+p.id+'">编辑</button><button data-a="del-point" data-id="'+p.id+'">删除</button></div></div>';});
+  $('pointList').innerHTML=html||'<div class="empty">还没有积分记录,点下方按钮记一笔</div>';
+  $('pointCount').textContent=state.points.length+' 个账户';
+  renderPtsMatch();
+}
+function renderPtsMatch(){
+  var html='';var withPts=state.offers.filter(function(o){return o.needPts&&!isExpired(o)&&o.type==='积分兑换';});
+  if(!withPts.length){$('ptsMatch').innerHTML='<div class="empty">还没有「已核验积分档位」的兑换情报。你在 App 里看到真实档位(如"5000 分兑 30 元券")后,在「优惠情报库」编辑对应活动填入"所需积分",这里会自动匹配。</div>';return;}
+  withPts.forEach(function(o){var bal=balOf(o.platform),cnt=acctCount(o.platform);
+    if(cnt===0){html+='<div class="alert-item"><div class="alert-main"><div class="alert-title">'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">需 '+o.needPts.toLocaleString()+' 分。尚未登记该平台积分账户,先到「我的积分」记一笔。</div></div></div>';return;}
+    if(bal>=o.needPts)html+='<div class="alert-item" style="border-color:#bbf7d0;background:#f0fdf4"><div class="alert-main"><div class="alert-title"><span class="badge green">✓ 可兑</span>'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">需 '+o.needPts.toLocaleString()+' 分,你有 '+bal.toLocaleString()+' 分,兑后余 <b style="color:var(--green)">'+(bal-o.needPts).toLocaleString()+'</b> 分</div><div class="alert-entry" id="entry-'+o.id+'">入口:'+esc(o.entry)+'</div></div><div class="offer-ctrl"><button class="btn-mini primary" data-a="show-entry" data-id="'+o.id+'">入口</button></div></div>';
+    else html+='<div class="alert-item"><div class="alert-main"><div class="alert-title"><span class="badge orange">还差 '+(o.needPts-bal).toLocaleString()+' 分</span>'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">需 '+o.needPts.toLocaleString()+' 分,现有 '+bal.toLocaleString()+' 分'+(dealText(o)?' · '+esc(dealText(o)):'')+'</div></div></div>';});
+  $('ptsMatch').innerHTML=html||'<div class="empty">—</div>';
+}
+function refreshAll(){renderStats();renderToday();renderOffers();renderPoints();
+  $('footData').innerHTML='数据来源:'+(state.feedDate?('官方情报包('+state.feedDate+') + '):'')+'内置预置情报('+((PRESETS.offers||[]).length)+' 条,带来源标注)· 每日更新由卖家侧自动整理,以各 App 实时展示为准。';
+}
+
+/* ---------- 智能匹配 ---------- */
+function runMatch(){
+  var amount=parseFloat($('mAmount').value),sc=$('mScenario').value,box=$('matchResults');
+  if(!amount||amount<=0||isNaN(amount)){box.innerHTML='<div class="empty">请输入有效的消费金额</div>';return;}
+  var computed=[],info=[];
+  state.offers.forEach(function(o){if(isExpired(o))return;if(!scenarioFit(o,sc))return;var save=calcSaving(o,amount);if(save>0)computed.push({o:o,save:save});else if(o.type==='积分兑换'||o.type==='达标奖励')info.push(o);});
+  computed.sort(function(a,b){return b.save-a.save;});
+  if(!computed.length){box.innerHTML='<div class="empty">当前情报库里没有能直接抵扣「'+esc(sc)+' ¥'+amount+'」的满减/立减活动。</div>'+(info.length?'<div class="hint-banner">值得关注(不直接折算金额):'+info.map(function(x){return esc(x.platform+'·'+x.title);}).join(';')+'</div>':'')+'<div class="hint-banner">提示:随机金额类活动(天天抽奖/神券等)未计入,以收银台实际展示为准。</div>';return;}
+  var html='';
+  computed.forEach(function(c,i){var pay=Math.max(0,amount-c.save);
+    html+='<div class="match-result'+(i===0?' best':'')+'"><div style="flex:1;min-width:190px"><div style="font-weight:700">'+(i===0?'<span class="badge red">最划算</span>':'第 '+(i+1)+' 选')+'<span class="badge purple">'+esc(c.o.platform)+'</span>'+esc(c.o.title)+'</div>'
+      +'<div style="font-size:12.5px;color:var(--ink2);margin-top:2px">'+esc(dealText(c.o)||c.o.type)+' · '+esc(c.o.entry)+'</div>'+(c.o.freq?'<div style="font-size:11.5px;color:var(--ink3);margin-top:2px">频次:'+esc(c.o.freq)+'</div>':'')+'</div>'
+      +'<div style="text-align:right"><div class="match-save">省 '+money(c.save)+'</div><div class="match-pay">实付约 '+money(pay)+'</div></div></div>';});
+  if(info.length)html+='<div class="hint-banner">另外可关注(不直接折算金额):'+info.map(function(x){return esc(x.platform+'·'+x.title);}).join(';')+'</div>';
+  html+='<div class="hint-banner">提示:基于情报库满减/折扣计算,随机类未计入,叠加以 App 收银台实际展示为准。</div>';
+  box.innerHTML=html;
+}
+
+/* ---------- 表单 ---------- */
+function renderScenarioChecks(sel){var h='';SCENARIOS.forEach(function(s){var on=(!sel&&s==='通用')||(sel&&sel.indexOf(s)>=0);h+='<label><input type="checkbox" value="'+esc(s)+'"'+(on?' checked':'')+'>'+esc(s)+'</label>';});$('fScenarios').innerHTML=h;}
+function openOfferForm(o){
+  editOfferId=o?o.id:null;
+  $('fPlatform').value=o?o.platform:'支付宝';$('fType').value=o?(o.type||'其他'):'每日领取';$('fFreq').value=o?(o.freq||'长期'):'每日';
+  $('fTitle').value=o?o.title:'';$('fThreshold').value=(o&&o.threshold!=null)?o.threshold:'';$('fDiscount').value=(o&&o.discount!=null)?o.discount:'';
+  $('fRate').value=(o&&o.rate!=null)?Math.round(o.rate*100):'';$('fCap').value=(o&&o.cap!=null)?o.cap:'';$('fNeedPts').value=(o&&o.needPts!=null)?o.needPts:'';
+  $('fEndDate').value=o?(o.endDate||''):'';$('fEntry').value=o?o.entry:'';$('fSource').value=o?(o.source||''):'';$('fRel').value=o?(o.rel||2):2;
+  $('fContent').value=o?o.content:'';renderScenarioChecks(o?o.scenarios:null);
+  $('offerFormBox').classList.add('show');$('offerSaveBtn').textContent=o?'保存修改':'保存情报';
+  $('offerFormBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function saveOfferForm(){
+  var title=$('fTitle').value.trim(),entry=$('fEntry').value.trim(),content=$('fContent').value.trim();
+  if(!title||!entry||!content){toast('活动名称/入口/说明为必填');return;}
+  var scen=[];document.querySelectorAll('#fScenarios input:checked').forEach(function(b){scen.push(b.value);});if(!scen.length)scen=['通用'];
+  var rateRaw=parseFloat($('fRate').value);
+  var obj={platform:$('fPlatform').value,type:$('fType').value,title:title,content:content,threshold:parseFloat($('fThreshold').value)||null,discount:parseFloat($('fDiscount').value)||null,rate:(!isNaN(rateRaw)&&rateRaw>0&&rateRaw<100)?rateRaw/100:null,cap:parseFloat($('fCap').value)||null,scenarios:scen,freq:$('fFreq').value,endDate:$('fEndDate').value||null,entry:entry,source:$('fSource').value.trim(),rel:Number($('fRel').value),needPts:$('fNeedPts').value?parseInt($('fNeedPts').value,10):null};
+  if(editOfferId){var o=state.offers.find(function(x){return x.id===editOfferId;});if(o){for(var k in obj)o[k]=obj[k];o.touched=true;o.updated=todayStr();toast('情报已更新');}}
+  else{obj.id=uid('u');obj.touched=true;obj.preset=false;obj.updated=todayStr();state.offers.push(obj);toast('已新增情报');}
+  saveState();closeOfferForm();refreshAll();
+}
+function openPointForm(p){
+  editPointId=p?p.id:null;$('pPlatform').value=p?p.platform:'支付宝积分';$('pLabel').value=p?(p.label||p.platform):'';$('pBalance').value=p?p.balance:'';$('pExpiry').value=p?(p.expiry||''):'';$('pNote').value=p?(p.note||''):'';
+  $('pointFormBox').classList.add('show');
+}
+function savePointForm(){
+  var bal=parseInt($('pBalance').value,10);if(isNaN(bal)||bal<0){toast('请输入有效余额');return;}
+  var obj={platform:$('pPlatform').value,label:$('pLabel').value.trim()||$('pPlatform').value,balance:bal,expiry:$('pExpiry').value||null,note:$('pNote').value.trim(),updated:todayStr()};
+  if(editPointId){var p=state.points.find(function(x){return x.id===editPointId;});if(p){for(var k in obj)p[k]=obj[k];if(p.isExample)delete p.isExample;toast('积分已更新');}}
+  else{obj.id=uid('y');state.points.push(obj);toast('已记录');}
+  saveState();closePointForm();refreshAll();
+}
+function findOffer(id){for(var i=0;i<state.offers.length;i++)if(state.offers[i].id===id)return state.offers[i];return null;}
+
+/* ---------- 顶部操作 ---------- */
+function exportData(){try{var blob=new Blob([JSON.stringify({offers:state.offers,points:state.points,feedDate:state.feedDate,feedUrl:state.feedUrl,exportedAt:todayStr()},null,1)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='优惠工作台备份-'+todayStr()+'.json';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(a.href);},1000);toast('备份已导出');}catch(e){toast('导出失败:'+e.message);}}
+function pickImport(){$('fileImport').click();}
+function importData(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!d||!d.offers){toast('文件格式不对,导入取消');return;}if(d.kind==='hb_offer_feed'){importFeedPack(d);return;}askConfirm('导入恢复','将覆盖当前全部数据('+state.offers.length+' 条情报、'+state.points.length+' 个积分账户),不可撤销,确认?',function(){state={offers:d.offers,points:d.points||[],dailyDone:{},filterPlatform:'全部',feedUrl:d.feedUrl||FEED_URL_DEFAULT,feedDate:d.feedDate||null};saveState();refreshAll();toast('导入成功');});}catch(e){toast('解析失败,请确认是本工作台导出的 JSON');}};r.readAsText(file);}
+function resetPresets(ask){var go=function(){var exist={};state.offers.forEach(function(o){exist[o.platform+'|'+o.title]=1;});var added=0;(PRESETS.offers||[]).forEach(function(src){if(exist[src.platform+'|'+src.title])return;var c=JSON.parse(JSON.stringify(src));c.id=uid('p');c.preset=true;c.active=true;state.offers.push(c);added++;});saveState();refreshAll();toast('已合并 '+added+' 条预置情报');};
+  if(ask===false){go();return;}askConfirm('恢复预置情报','把内置 '+((PRESETS.offers||[]).length)+' 条预置情报合并回来(不覆盖你手动新增/修改的同名条目),继续?',go);}
+function clearExamplePoints(){askConfirm('清空示例积分','删除 3 条示例积分记录(不影响你自己添加的),继续?',function(){state.points=state.points.filter(function(p){return !p.isExample;});saveState();refreshAll();toast('示例积分已清空');});}
+function clearAll(){askConfirm('清空全部数据','⚠️ 删除所有优惠情报、积分与打卡,不可恢复!建议先「导出备份」。确认?',function(){state=defaultState();saveState();refreshAll();toast('已清空,可「恢复预置」找回');});}
+function switchTab(name){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===name);});document.querySelectorAll('section[data-tab]').forEach(function(s){s.classList.toggle('show',s.getAttribute('data-tab')===name);});}
+state.dailyTodayId=function(id){return !!(state.dailyDone[todayStr()]&&state.dailyDone[todayStr()][id]);};
+
+/* ---------- 事件 ---------- */
+$('tabs').addEventListener('click',function(e){var b=e.target.closest('.tab-btn');if(b)switchTab(b.getAttribute('data-tab'));});
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-a]');if(!el)return;var act=el.getAttribute('data-a'),id=el.getAttribute('data-id');
+  if(act==='show-entry'){var en=$('entry-'+id);if(en)en.classList.toggle('show');return;}
+  if(act==='toggle-daily'){var t=todayStr();if(!state.dailyDone[t])state.dailyDone[t]={};if(state.dailyDone[t][id])delete state.dailyDone[t][id];else state.dailyDone[t][id]=true;saveState();refreshAll();return;}
+  if(act==='filter'){state.filterPlatform=el.getAttribute('data-p');renderOffers();return;}
+  if(act==='edit-offer'){var o=findOffer(id);if(o){switchTab('offers');openOfferForm(o);}return;}
+  if(act==='del-offer'){var t2=findOffer(id);if(!t2)return;askConfirm('删除情报','确认删除「'+t2.platform+' · '+t2.title+'」?',function(){state.offers=state.offers.filter(function(x){return x.id!==id;});saveState();refreshAll();toast('已删除');});return;}
+  if(act==='edit-point'){var p=state.points.find(function(x){return x.id===id;});if(p){switchTab('points');openPointForm(p);}return;}
+  if(act==='del-point'){var tp=state.points.find(function(x){return x.id===id;});if(!tp)return;askConfirm('删除积分记录','确认删除「'+tp.platform+'」?',function(){state.points=state.points.filter(function(x){return x.id!==id;});saveState();refreshAll();toast('已删除');});return;}
+});
+$('offerFormToggle').addEventListener('click',function(){if($('offerFormBox').classList.contains('show'))closeOfferForm();else openOfferForm(null);});
+$('offerSaveBtn').addEventListener('click',saveOfferForm);
+$('offerCancelBtn').addEventListener('click',function(){editOfferId=null;$('offerFormBox').classList.remove('show');});
+$('pointFormToggle').addEventListener('click',function(){if($('pointFormBox').classList.contains('show'))closePointForm();else openPointForm(null);});
+$('pointSaveBtn').addEventListener('click',savePointForm);
+$('pointCancelBtn').addEventListener('click',function(){editPointId=null;$('pointFormBox').classList.remove('show');});
+$('matchBtn').addEventListener('click',runMatch);
+$('fileImport').addEventListener('change',function(){if(this.files&&this.files[0])importData(this.files[0]);this.value='';});
+$('confirmYes').addEventListener('click',function(){if(confirmCb){var cb=confirmCb;closeConfirm();cb();}});
+$('confirmNo').addEventListener('click',closeConfirm);
+function closeOfferForm(){editOfferId=null;$('offerFormBox').classList.remove('show');}
+function closePointForm(){editPointId=null;$('pointFormBox').classList.remove('show');}
+$('fPlatform').innerHTML=PLATFORMS.filter(function(x){return x!=='全部';}).map(function(x){return '<option>'+x+'</option>';}).join('');
+$('pPlatform').innerHTML=POINT_PLATS.map(function(x){return '<option>'+x+'</option>';}).join('');
+$('pPlatform').addEventListener('change',function(){if(!$('pLabel').value)$('pLabel').value=$('pPlatform').value;});
+
+loadState();
+refreshAll();
+// 有内置更新源(https)时,静默拉一次;文件版离线打开不会弹错
+if(FEED_URL_DEFAULT&&FEED_URL_DEFAULT.indexOf('http')===0&&typeof fetch==='function'){setTimeout(function(){fetchFeed(false);},600);}
+})();
+</script>
+</body>
+</html>

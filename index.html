@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>优惠积分工作台 · 个人版</title>
+<title>羊毛雷达 · 每日优惠积分台</title>
 <style>
-:root{--bg:#f3f4f7;--card:#fff;--line:#e6e8ee;--ink:#1d2330;--ink2:#4b5568;--ink3:#8a93a6;--brand:#4f46e5;--blue:#3b82f6;--green:#16a34a;--orange:#ea580c;--red:#dc2626;--purple:#7c3aed}
+:root{--bg:#f3f4f7;--card:#fff;--line:#e6e8ee;--ink:#1d2330;--ink2:#4b5568;--ink3:#8a93a6;--brand:#ea580c;--blue:#3b82f6;--green:#16a34a;--orange:#ea580c;--red:#dc2626;--purple:#7c3aed}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-.topbar{background:linear-gradient(120deg,#312e81,#4f46e5 60%,#6d5ef0);color:#fff;padding:12px 16px}
+.topbar{background:linear-gradient(120deg,#9a3412,#ea580c 55%,#f97316);color:#fff;padding:12px 16px}
 .topbar-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px}
 .brand .sub{display:block;font-size:11px;font-weight:400;opacity:.85}
@@ -21,7 +21,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,BlinkMacS
 .stat-chip b{font-size:16px;margin-left:5px;color:var(--ink)}
 .tabs{display:flex;gap:5px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:12px;overflow-x:auto}
 .tab-btn{border:0;background:transparent;padding:8px 14px;border-radius:9px;font-size:13.5px;cursor:pointer;color:var(--ink2);white-space:nowrap}
-.tab-btn.active{background:#eef2ff;color:var(--brand);font-weight:600}
+.tab-btn.active{background:#fff3e6;color:#c2410c;font-weight:600}
 section[data-tab]{display:none}section[data-tab].show{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
 .card-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;margin-bottom:10px}
@@ -39,7 +39,7 @@ section[data-tab]{display:none}section[data-tab].show{display:block}
 .offer-title .row2{margin-top:3px}
 .offer-ctrl{display:flex;gap:6px;flex-wrap:wrap}
 .offer-ctrl button,.btn-mini{border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 9px;font-size:12px;cursor:pointer;color:var(--ink2)}
-.btn-mini.primary{background:#eef2ff;border-color:#c7d2fe;color:var(--brand)}
+.btn-mini.primary{background:#fff7ed;border-color:#fed7aa;color:#c2410c}
 .btn-mini.done{background:#dcfce7;border-color:#86efac;color:#15803d}
 .deal-line{display:inline-block;margin:7px 0 2px;background:#fef3c7;color:#92400e;border-radius:7px;padding:2px 10px;font-size:12px;font-weight:600}
 .offer-content{color:var(--ink2);font-size:12.8px;margin-top:5px;white-space:pre-line}
@@ -47,7 +47,7 @@ section[data-tab]{display:none}section[data-tab].show{display:block}
 .offer-meta .lab{color:var(--ink2)}
 .empty{color:var(--ink3);text-align:center;padding:16px 0;font-size:13px}
 .hint-banner{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:9px 13px;font-size:12.8px;color:#92400e;margin-bottom:10px}
-.feed-banner{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:9px 13px;font-size:12.8px;color:#3730a3;margin-bottom:10px}
+.feed-banner{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:9px 13px;font-size:12.8px;color:#9a3412;margin-bottom:10px}
 .alert-item{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px}
 .alert-item.soon{border-color:#fed7aa;background:#fff7ed}
 .alert-item.overdue{border-color:#fecaca;background:#fef2f2}
@@ -65,7 +65,8 @@ section[data-tab]{display:none}section[data-tab].show{display:block}
 .match-result.best{border-color:#f59e0b;background:#fffbeb}
 .match-save{font-size:17px;font-weight:800;color:var(--red)}
 .match-pay{font-size:12px;color:var(--ink3)}
-.form-toggle-btn{width:100%;border:1px dashed #c7d2fe;background:#eef2ff;color:var(--brand);border-radius:10px;padding:8px;font-size:13px;cursor:pointer;margin-top:5px}
+.form-toggle-btn{width:100%;border:1px dashed #fdba74;background:#fff7ed;color:#c2410c;border-radius:10px;padding:8px;font-size:13px;cursor:pointer;margin-top:5px}
+.form-toggle-btn:hover{background:#ffedd5}
 .form-box{display:none;border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:9px;background:#fafbfd}
 .form-box.show{display:block}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
@@ -75,7 +76,7 @@ textarea{min-height:64px;resize:vertical}
 .checks{display:flex;flex-wrap:wrap;gap:3px 13px;font-size:12.5px}
 .form-actions{display:flex;gap:10px;margin-top:12px}
 .btn{border-radius:9px;padding:7px 16px;font-size:13px;border:1px solid var(--line);cursor:pointer;background:#fff;color:var(--ink2)}
-.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary{background:#ea580c;border-color:#ea580c;color:#fff}
 .btn.danger{background:var(--red);border-color:var(--red);color:#fff}
 footer{max-width:1120px;margin:0 auto;padding:4px 16px 24px;color:var(--ink3);font-size:11.5px;line-height:1.7}
 #toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:#1d2330;color:#fff;padding:9px 18px;border-radius:10px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;z-index:99}
@@ -91,7 +92,7 @@ footer{max-width:1120px;margin:0 auto;padding:4px 16px 24px;color:var(--ink3);fo
   <div class="topbar-inner">
     <div class="brand">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
-      <div>优惠积分工作台<span class="sub">支付宝 · 微信 · 美团 · 点评 · 工建邮招 · 每日更新版</span></div>
+      <div>羊毛雷达<span class="sub">支付宝·微信·美团·点评·工建邮招 · 积分优惠每日更新</span></div>
     </div>
     <div class="actions">
       <button onclick="toggleSettings()">⚙ 更新源</button>
@@ -198,7 +199,7 @@ footer{max-width:1120px;margin:0 auto;padding:4px 16px 24px;color:var(--ink3);fo
 <footer>
   <div id="footData"></div>
   <div style="margin-top:3px">所有活动均可能调整或名额限制,最终以各 App 内活动页面实时展示为准;请只通过官方 App 入口参与,谨防「代报名 / 内部名额」诈骗。预置情报带来源标注(官方来源/可靠实测/社区整理);积分档位仅在 App 内核验后登记,不做任何承诺性收益保证。</div>
-  <div style="margin-top:3px">优惠积分工作台 · 个人版 v1.0.0 · 构建 2026-09-06 · 你的数据仅存本机浏览器(可随时导出备份)</div>
+  <div style="margin-top:3px">羊毛雷达 · 个人版 v1.0.0 · 构建 2026-09-07 · 你的数据仅存本机浏览器(可随时导出备份)</div>
 </footer>
 <div id="toast"></div>
 <div class="modal-mask" id="confirmMask"><div class="modal"><h3 id="confirmTitle"></h3><p id="confirmText"></p><div class="form-actions"><button class="btn danger" id="confirmYes">确认</button><button class="btn" id="confirmNo">取消</button></div></div></div>

@@ -1046,6 +1046,7 @@ function isExpired(o){var d=daysUntil(o.endDate);return d!==null&&d<0;}
 function isExpiringSoon(o){var d=daysUntil(o.endDate);return d!==null&&d>=0&&d<=7;}
 function freqToday(o){if(o.freq==='每日')return true;if(WEEK_MAP.hasOwnProperty(o.freq))return new Date().getDay()===WEEK_MAP[o.freq];var m=/^每月(\d+)号$/.exec(o.freq||'');if(m)return new Date().getDate()===parseInt(m[1],10);return false;}
 function isWeekly(o){return WEEK_MAP.hasOwnProperty(o.freq||'');}
+function dailyDoneForToday(id){var t=todayStr();return !!(state.dailyDone[t]&&state.dailyDone[t][id]);}
 function relLabel(r){if(r===3)return '<span class="badge green">官方来源</span>';if(r===2)return '<span class="badge blue">可靠实测</span>';return '<span class="badge gray">社区整理</span>';}
 function money(n){return n>=10?'¥'+Math.round(n*100)/100:'¥'+(Math.round(n*100)/100).toFixed(2);}
 function dealText(o){var p=[];if(o.threshold)p.push('满 '+o.threshold+' 元');if(o.discount)p.push('减 '+o.discount+' 元');if(o.rate)p.push((o.rate*10)+' 折'+(o.cap?'(封顶减 '+o.cap+' 元)':''));return p.join(' · ');}
@@ -1129,7 +1130,7 @@ function renderAlerts(){
 }
 function renderDaily(){
   var html='',n=0;
-  state.offers.forEach(function(o){if(o.freq!=='每日'||isExpired(o))return;n++;var done=!!state.dailyTodayId(o.id);
+  state.offers.forEach(function(o){if(o.freq!=='每日'||isExpired(o))return;n++;var done=!!dailyDoneForToday(o.id);
     html+='<div class="alert-item"><div class="alert-main"><div class="alert-title">'+esc(o.platform)+' · '+esc(o.title)+'</div><div class="alert-desc">'+esc(o.content)+'</div><div class="alert-entry" id="entry-'+o.id+'">入口:'+esc(o.entry)+'</div></div><div class="offer-ctrl"><button class="btn-mini primary" data-a="show-entry" data-id="'+o.id+'">入口</button><button class="btn-mini'+(done?' done':'')+'" data-a="toggle-daily" data-id="'+o.id+'">'+(done?'已领':'领完打卡')+'</button></div></div>';});
   $('dailyCount').textContent=n+' 项';
   $('dailyList').innerHTML=html||'<div class="empty">今天的必领项目都完成啦,明天见!</div>';
@@ -1249,7 +1250,7 @@ function resetPresets(ask){var go=function(){var exist={};state.offers.forEach(f
 function clearExamplePoints(){askConfirm('清空示例积分','删除 3 条示例积分记录(不影响你自己添加的),继续?',function(){state.points=state.points.filter(function(p){return !p.isExample;});saveState();refreshAll();toast('示例积分已清空');});}
 function clearAll(){askConfirm('清空全部数据','⚠️ 删除所有优惠情报、积分与打卡,不可恢复!建议先「导出备份」。确认?',function(){state=defaultState();saveState();refreshAll();toast('已清空,可「恢复预置」找回');});}
 function switchTab(name){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===name);});document.querySelectorAll('section[data-tab]').forEach(function(s){s.classList.toggle('show',s.getAttribute('data-tab')===name);});}
-state.dailyTodayId=function(id){return !!(state.dailyDone[todayStr()]&&state.dailyDone[todayStr()][id]);};
+
 
 /* ---------- 事件 ---------- */
 $('tabs').addEventListener('click',function(e){var b=e.target.closest('.tab-btn');if(b)switchTab(b.getAttribute('data-tab'));});

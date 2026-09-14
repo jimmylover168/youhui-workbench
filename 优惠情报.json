@@ -2,8 +2,8 @@
  "kind": "hb_offer_feed",
  "schema": 1,
  "meta": {
-  "date": "2026-09-13",
-  "count": 31
+  "date": "2026-09-14",
+  "count": 30
  },
  "offers": [
   {
@@ -66,27 +66,6 @@
    "entry": "支付宝App → 我的 → 支付宝会员 → 热门权益 → 7元到店付款周卡",
    "source": "活动规则页（52趣折转载）",
    "rel": 2,
-   "needPts": null,
-   "firstSeen": "2026-09-05",
-   "lastSeen": "2026-09-05"
-  },
-  {
-   "platform": "支付宝",
-   "type": "每日领取",
-   "title": "支付有礼 · 碰一碰红包",
-   "content": "首页搜「支付有礼」，每日答题可抽碰一碰红包；一期答题活动约持续 3 周，周六有大礼。",
-   "threshold": null,
-   "discount": null,
-   "rate": null,
-   "cap": null,
-   "scenarios": [
-    "通用"
-   ],
-   "freq": "每日",
-   "endDate": "2026-09-13",
-   "entry": "支付宝App 首页搜索「支付有礼」",
-   "source": "活动线报汇总",
-   "rel": 1,
    "needPts": null,
    "firstSeen": "2026-09-05",
    "lastSeen": "2026-09-05"

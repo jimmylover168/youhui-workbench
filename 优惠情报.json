@@ -2,8 +2,8 @@
  "kind": "hb_offer_feed",
  "schema": 1,
  "meta": {
-  "date": "2026-09-30",
-  "count": 30
+  "date": "2026-10-01",
+  "count": 29
  },
  "offers": [
   {
@@ -467,27 +467,6 @@
    "endDate": null,
    "entry": "建行生活App → 龙积分",
    "source": "建设银行官方活动（网易福建报道）",
-   "rel": 3,
-   "needPts": null,
-   "firstSeen": "2026-09-05",
-   "lastSeen": "2026-09-05"
-  },
-  {
-   "platform": "邮储银行",
-   "type": "达标奖励",
-   "title": "信用卡 · 越刷越精彩万元享好礼",
-   "content": "报名后按当月信用卡累计消费达标领奖：满 6000 元（9月限时降档）领 5 元立减金或 6000 积分；满 2 万领 10 元档；满 3 万领 20 元档；当月消费排名前 6000 名额外领 100 元立减金。活动 9 月 30 日截止！",
-   "threshold": null,
-   "discount": null,
-   "rate": null,
-   "cap": null,
-   "scenarios": [
-    "通用"
-   ],
-   "freq": "限时",
-   "endDate": "2026-09-30",
-   "entry": "邮储手机银行App → 信用卡 → 活动礼遇 → 消费达标活动；或邮储信用卡微信小程序",
-   "source": "邮储银行官网活动页",
    "rel": 3,
    "needPts": null,
    "firstSeen": "2026-09-05",
